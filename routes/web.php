@@ -1,8 +1,9 @@
 <?php
 
+
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
-use App\Http\Controllers\IndexController;
+use App\Http\Controllers\Index1Controller;
 use App\Http\Controllers\ListingController;
 use App\Http\Controllers\UserAccountController;
 use App\Http\Controllers\ListingOfferController;
@@ -15,8 +16,9 @@ use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use App\Http\Controllers\RealtorListingAcceptOfferController;
 
 
-use App\Http\Controllers\Auth\CreateController;
+use App\Http\Controllers\Auth\IndexController;
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Auth\LogoutController;
 
 /*
 |--------------------------------------------------------------------------
@@ -29,8 +31,8 @@ use App\Http\Controllers\Auth\LoginController;
 |
 */
 
-Route::get('/', [IndexController::class, 'index']);
-Route::get('/hello', [IndexController::class, 'show'])
+Route::get('/', [Index1Controller::class, 'index']);
+Route::get('/hello', [Index1Controller::class, 'show'])
   ->middleware('auth');
 
 Route::resource('listing', ListingController::class)
@@ -50,13 +52,12 @@ Route::put(
 )->middleware('auth')->name('notification.seen');
 
 
-Route::get('login', CreateController::class)->name('login');
+
+Route::get('login', IndexController::class)->name('login');
 Route::post('login', LoginController::class)->name('login.store');
+Route::delete('logout', LogoutController::class)->name('logout');
 
 
-
-Route::delete('logout', [AuthController::class, 'destroy'])
-  ->name('logout');
 
 Route::get('/email/verify', function () {
   return inertia('Auth/VerifyEmail');
