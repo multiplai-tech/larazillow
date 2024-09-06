@@ -11,9 +11,9 @@
 - 📦 Repository Pattern
 - 🔥 Composition API
 - 📋 The `<script setup>` syntax.
-- 🐋 docker-compose
-- 🧮 adminer for database management
-- 📧 mailhog for email testing
+- 🐋 Docker compose
+- 🧮 Adminer for database management
+- 📧 Mailhog for email testing
 
 ### Installation
 
