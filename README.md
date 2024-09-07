@@ -8,9 +8,9 @@
 
 
 ## Features
-- 📦 Repository Pattern
 - 🔥 Composition API
 - 📋 The `<script setup>` syntax.
+- 📦 Service Pattern
 - 🐋 Docker compose
 - 🧮 Adminer for database management
 - 📧 Mailhog for email testing
