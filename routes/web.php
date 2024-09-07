@@ -2,23 +2,22 @@
 
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\AuthController;
-use App\Http\Controllers\Index1Controller;
-use App\Http\Controllers\ListingController;
 use App\Http\Controllers\UserAccountController;
 use App\Http\Controllers\ListingOfferController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\RealtorListingController;
 use App\Http\Controllers\NotificationSeenController;
-use Illuminate\Notifications\Events\NotificationSent;
 use App\Http\Controllers\RealtorListingImageController;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use App\Http\Controllers\RealtorListingAcceptOfferController;
 
 
-use App\Http\Controllers\Auth\IndexController;
-use App\Http\Controllers\Auth\LoginController;
-use App\Http\Controllers\Auth\LogoutController;
+use App\Http\Controllers\V1\Auth\IndexController;
+use App\Http\Controllers\V1\Auth\LoginController;
+use App\Http\Controllers\V1\Auth\LogoutController;
+
+use App\Http\Controllers\V1\Listing\IndexController as ListingIndexController;
+use App\Http\Controllers\V1\Listing\ShowController as ListingShowController;
 
 /*
 |--------------------------------------------------------------------------
@@ -31,12 +30,14 @@ use App\Http\Controllers\Auth\LogoutController;
 |
 */
 
-Route::get('/', [Index1Controller::class, 'index']);
-Route::get('/hello', [Index1Controller::class, 'show'])
-  ->middleware('auth');
+Route::get('/', function () {
+	return redirect('/listing');
+});
 
-Route::resource('listing', ListingController::class)
-  ->only(['index', 'show']);
+Route::prefix('listing')->group(function () {
+    Route::get('/', ListingIndexController::class)->name('listing.index');
+	Route::get('/{listing}', ListingShowController::class)->name('listing.show');
+});
 
 Route::resource('listing.offer', ListingOfferController::class)
   ->middleware('auth')

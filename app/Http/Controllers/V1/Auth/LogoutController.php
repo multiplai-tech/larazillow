@@ -2,12 +2,13 @@
 
 declare(strict_types=1);
 
-namespace App\Http\Controllers\Auth;
+namespace App\Http\Controllers\V1\Auth;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class LogoutController {
+class LogoutController
+{
 	public function __invoke(Request $request)
 	{
 		Auth::logout();
