@@ -19,6 +19,11 @@ use App\Http\Controllers\V1\Auth\LogoutController;
 use App\Http\Controllers\V1\Listing\IndexController as ListingIndexController;
 use App\Http\Controllers\V1\Listing\ShowController as ListingShowController;
 
+use App\Http\Controllers\V1\ListingOffer\StoreController as ListingOfferStoreController;
+
+use App\Http\Controllers\V1\Notification\IndexController as NotificationIndexController;
+use App\Http\Controllers\V1\Notification\MarkAsReadController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -34,31 +39,51 @@ Route::get('/', function () {
 	return redirect('/listing');
 });
 
-Route::prefix('listing')->group(function () {
-    Route::get('/', ListingIndexController::class)->name('listing.index');
-	Route::get('/{listing}', ListingShowController::class)->name('listing.show');
-});
-
-Route::resource('listing.offer', ListingOfferController::class)
-  ->middleware('auth')
-  ->only(['store']);
-
-Route::resource('notification', NotificationController::class)
-  ->middleware('auth')
-  ->only(['index']);
-
-Route::put(
-  'notification/{notification}/seen',
-  NotificationSeenController::class
-)->middleware('auth')->name('notification.seen');
-
-
-
 Route::get('login', IndexController::class)->name('login');
 Route::post('login', LoginController::class)->name('login.store');
 Route::delete('logout', LogoutController::class)->name('logout');
 
+Route::prefix('listing')
+->name('listing.')
+->group(function () {
+    Route::get('/', ListingIndexController::class)->name('index');
+	Route::get('/{listing}', ListingShowController::class)->name('show');
 
+	Route::post('/{listing}/offer', ListingOfferStoreController::class)
+		->name('offer.store')
+		->middleware('auth');
+});
+
+Route::prefix('notification')
+	->name('notification.')
+	->group(function () {
+		Route::get('/', NotificationIndexController::class)
+			->middleware('auth')
+			->name('index');
+		
+		Route::put('/{notification}/seen', MarkAsReadController::class)
+			->middleware('auth')
+			->name('seen');
+	});
+
+// Route::resource('notification', NotificationController::class)
+//   ->middleware('auth')
+//   ->only(['index']);
+
+
+// Route::resource('listing.offer', ListingOfferController::class)
+//   ->middleware('auth')
+//   ->only(['store']);
+
+// Route::resource('notification', NotificationController::class)
+//   ->middleware('auth')
+//   ->only(['index']);
+
+
+// Route::put(
+//   'notification/{notification}/seen',
+//   NotificationSeenController::class
+// )->middleware('auth')->name('notification.seen');
 
 Route::get('/email/verify', function () {
   return inertia('Auth/VerifyEmail');

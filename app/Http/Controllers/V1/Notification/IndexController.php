@@ -1,13 +1,14 @@
 <?php
 
-namespace App\Http\Controllers;
+declare(strict_types=1);
+
+namespace App\Http\Controllers\V1\Notification;
 
 use Illuminate\Http\Request;
 use Inertia\Response;
 
-class NotificationController extends Controller
-{
-    public function index(Request $request): Response
+class IndexController {
+	public function __invoke(Request $request): Response
     {
         return inertia(
             'Notification/Index',

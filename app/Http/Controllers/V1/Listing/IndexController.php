@@ -12,10 +12,18 @@ use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 class IndexController
 {
 	use AuthorizesRequests;
-	public function __invoke(IndexRequest $request, ListingsService $listingsService)
+
+	public function __construct(
+		protected ListingsService $listingsService
+	)
+	{
+
+	}
+	
+	public function __invoke(IndexRequest $request)
 	{
 		$this->authorize('viewAny', Listing::class);
 		
-        return inertia('Listing/Index', $listingsService->index($request));
+        return inertia('Listing/Index', $this->listingsService->index($request));
 	}
 }

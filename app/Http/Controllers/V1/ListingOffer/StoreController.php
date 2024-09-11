@@ -1,17 +1,22 @@
 <?php
 
-namespace App\Http\Controllers;
+declare(strict_types=1);
+
+namespace App\Http\Controllers\V1\ListingOffer;
 
 use App\Models\Offer;
 use App\Models\Listing;
 use Illuminate\Http\Request;
 use App\Notifications\OfferMade;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
-class ListingOfferController extends Controller
+class StoreController
 {
-    public function store(Listing $listing, Request $request)
-    {
-        $this->authorize('view', $listing);
+	use AuthorizesRequests;
+
+	public function __invoke(Listing $listing, Request $request)
+	{
+		$this->authorize('view', $listing);
 
         $offer = $listing->offers()->save(
             Offer::make(
@@ -20,6 +25,7 @@ class ListingOfferController extends Controller
                 ])
             )->bidder()->associate($request->user())
         );
+		
         $listing->owner->notify(
             new OfferMade($offer)
         );
@@ -28,5 +34,5 @@ class ListingOfferController extends Controller
             'success',
             'Offer was made!'
         );
-    }
+	}
 }
